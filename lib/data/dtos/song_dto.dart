@@ -3,19 +3,19 @@ import '../../model/songs/song.dart';
 class SongDto {
   static const String idKey = 'id';
   static const String titleKey = 'title';
-  static const String artistKey = 'artistsId';
+  static const String artistKey = 'artistId';
   static const String durationKey = 'duration';
   static const String imageUrl = 'imageUrl';
 
   static Song fromJson(String id, Map<String, dynamic> json) {
-    // assert(json[artistKey] is String);
+    assert(json[artistKey] is String);
     assert(json[titleKey] is String);
     assert(json[durationKey] is int);
     assert(json[imageUrl] is String);
 
     return Song(
       id: id,
-      artist: id,
+      artist: json[artistKey],
       title: json[titleKey],
       duration: Duration(milliseconds: json[durationKey]),
       imageUrl: Uri.parse(json[imageUrl]),

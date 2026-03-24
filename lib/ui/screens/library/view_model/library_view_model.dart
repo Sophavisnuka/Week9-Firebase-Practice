@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:week9_firebase/data/repositories/artists/artist_repository.dart';
 import '../../../../data/repositories/songs/song_repository.dart';
 import '../../../states/player_state.dart';
 import '../../../../model/songs/song.dart';
@@ -6,11 +7,12 @@ import '../../../utils/async_value.dart';
 
 class LibraryViewModel extends ChangeNotifier {
   final SongRepository songRepository;
+  final ArtistRepository? artistRepository;
   final PlayerState playerState;
 
   AsyncValue<List<Song>> songsValue = AsyncValue.loading();
 
-  LibraryViewModel({required this.songRepository, required this.playerState}) {
+  LibraryViewModel({required this.songRepository, required this.playerState, this.artistRepository}) {
     playerState.addListener(notifyListeners);
 
     // init
@@ -43,6 +45,11 @@ class LibraryViewModel extends ChangeNotifier {
      notifyListeners();
 
   }
+
+  // void fetchArtist() async {
+  //   List<Artist> artists = await artistRepository.fetchArtist();
+  //   notifyListeners();
+  // }
 
   bool isSongPlaying(Song song) => playerState.currentSong == song;
 
