@@ -55,9 +55,7 @@ class LibraryViewModel extends ChangeNotifier {
     notifyListeners();
 
   }
-
-  Song? getSongById(String songId) => _songMap[songId];
-
+  
   bool isSongPlaying(Song song) => playerState.currentSong == song;
 
   void start(Song song) => playerState.start(song);

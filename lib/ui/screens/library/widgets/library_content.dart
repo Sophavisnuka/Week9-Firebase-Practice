@@ -38,17 +38,10 @@ class LibraryContent extends StatelessWidget {
             itemCount: songs.length,
             itemBuilder: (context, index) {
               final songWithArtist = songs[index];
-              final song = mv.getSongById(songWithArtist.songId);
-
-              // Skip if song not found - log it for debugging
-              if (song == null) {
-                return SizedBox.shrink();
-              }
-
+              final song = songWithArtist.song;
               return SongTile(
                 song: song,
-                artistName: songWithArtist.artistName,
-                genre: songWithArtist.genre,
+                songWithArtist: songWithArtist,
                 isPlaying: mv.isSongPlaying(song),
                 onTap: () {
                   mv.start(song);

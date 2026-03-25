@@ -59,38 +59,7 @@ class SongRepositoryMock implements SongRepository {
   @override
   Future<List<SongWithArtist>> fetchSongWithArtist() async {
     return Future.delayed(Duration(seconds: 2), () {
-      return [
-        SongWithArtist(
-          songId: 's1',
-          title: 'Mock Song 1',
-          artistName: 'Mock Artist 1',
-          genre: 'Pop',
-        ),
-        SongWithArtist(
-          songId: 's2',
-          title: 'Mock Song 2',
-          artistName: 'Mock Artist 2',
-          genre: 'Rock',
-        ),
-        SongWithArtist(
-          songId: 's3',
-          title: 'Mock Song 3',
-          artistName: 'Mock Artist 3',
-          genre: 'Jazz',
-        ),
-        SongWithArtist(
-          songId: 's4',
-          title: 'Mock Song 4',
-          artistName: 'Mock Artist 4',
-          genre: 'Classical',
-        ),
-        SongWithArtist(
-          songId: 's5',
-          title: 'Mock Song 5',
-          artistName: 'Mock Artist 5',
-          genre: 'Electronic',
-        ),
-      ];
+      return [];
     });
   }
 }

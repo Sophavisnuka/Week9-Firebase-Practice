@@ -9,8 +9,7 @@ import 'song_repository.dart';
 
 class SongRepositoryFirebase extends SongRepository {
   final Uri songsUri = Uri.https('fir-flutter-48baa-default-rtdb.asia-southeast1.firebasedatabase.app', '/artist/songs.json');
-
-  Uri artistUri(String artistId) => Uri.https('fir-flutter-48baa-default-rtdb.asia-southeast1.firebasedatabase.app', '/artist/artists/$artistId.json');
+  final Uri artistsUri = Uri.https('fir-flutter-48baa-default-rtdb.asia-southeast1.firebasedatabase.app', '/artist/artists.json');
 
   @override
   Future<List<Song>> fetchSongs() async {
@@ -43,38 +42,38 @@ class SongRepositoryFirebase extends SongRepository {
 
   @override
   Future<List<SongWithArtist>> fetchSongWithArtist() async {
-    // Step 1: fetch all songs (reuse your existing logic)
     final List<Song> songs = await fetchSongs();
+    final http.Response artistsResponse = await http.get(artistsUri);
 
-    // Step 2: collect unique artistIds to avoid fetching the same artist twice
-    final Set<String> artistIds = songs.map((s) => s.artist).toSet();
+    if (artistsResponse.statusCode != 200) {
+      throw Exception('Failed to load artists');
+    }
 
-    // Step 3: fetch each unique artist in parallel
+    final artistsDecoded = jsonDecode(artistsResponse.body);
+    if (artistsDecoded == null) {
+      return [];
+    }
+
+    final Map<String, dynamic> artistsMap = Map<String, dynamic>.from(artistsDecoded);
     final Map<String, Artist> artistCache = {};
 
-    await Future.wait(
-      artistIds.map((id) async {
-        final response = await http.get(artistUri(id));
-        if (response.statusCode == 200) {
-          final json = jsonDecode(response.body);
-          if (json != null) {
-            artistCache[id] = ArtistDto.fromJson(id, Map<String, dynamic>.from(json));
-          }
-        }
-      }),
-    );
+    artistsMap.forEach((id, value) {
+      final artistJson = Map<String, dynamic>.from(value as Map);
+      artistCache[id] = ArtistDto.fromJson(id, artistJson);
+    });
 
-    // Step 4: join songs with their artist
     final List<SongWithArtist> result = [];
 
     for (final song in songs) {
       final artist = artistCache[song.artist];
       if (artist != null) {
         result.add(SongWithArtist(
-          songId: song.id,
-          title: song.title,
-          artistName: artist.artistName,
-          genre: artist.genre,
+          song: song,
+          artist: artist
+          // songId: song.id,
+          // title: song.title,
+          // artistName: artist.artistName,
+          // genre: artist.genre,
         ));
       }
     }
