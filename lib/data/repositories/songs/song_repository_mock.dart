@@ -1,5 +1,7 @@
 // song_repository_mock.dart
 
+import 'package:week9_firebase/model/songs/song_with_artist.dart';
+
 import '../../../model/songs/song.dart';
 import 'song_repository.dart';
 
@@ -39,8 +41,8 @@ class SongRepositoryMock implements SongRepository {
 
   @override
   Future<List<Song>> fetchSongs() async {
-    return Future.delayed(Duration(seconds: 4), () {
-      throw Exception("G3 and G4 the class is finished");
+    return Future.delayed(Duration(seconds: 2), () {
+      return _songs;
     });
   }
 
@@ -51,6 +53,44 @@ class SongRepositoryMock implements SongRepository {
         (song) => song.id == id,
         orElse: () => throw Exception("No song with id $id in the database"),
       );
+    });
+  }
+
+  @override
+  Future<List<SongWithArtist>> fetchSongWithArtist() async {
+    return Future.delayed(Duration(seconds: 2), () {
+      return [
+        SongWithArtist(
+          songId: 's1',
+          title: 'Mock Song 1',
+          artistName: 'Mock Artist 1',
+          genre: 'Pop',
+        ),
+        SongWithArtist(
+          songId: 's2',
+          title: 'Mock Song 2',
+          artistName: 'Mock Artist 2',
+          genre: 'Rock',
+        ),
+        SongWithArtist(
+          songId: 's3',
+          title: 'Mock Song 3',
+          artistName: 'Mock Artist 3',
+          genre: 'Jazz',
+        ),
+        SongWithArtist(
+          songId: 's4',
+          title: 'Mock Song 4',
+          artistName: 'Mock Artist 4',
+          genre: 'Classical',
+        ),
+        SongWithArtist(
+          songId: 's5',
+          title: 'Mock Song 5',
+          artistName: 'Mock Artist 5',
+          genre: 'Electronic',
+        ),
+      ];
     });
   }
 }
