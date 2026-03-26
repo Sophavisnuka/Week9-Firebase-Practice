@@ -1,7 +1,6 @@
 import 'package:week9_firebase/model/artists/artist.dart';
 
 class ArtistDto {
-  static const String artistId = 'artistId';
   static const String artistName = 'name';
   static const String genre = 'genre';
   static const String artistProfile = 'imageUrl';
