@@ -70,10 +70,6 @@ class SongRepositoryFirebase extends SongRepository {
         result.add(SongWithArtist(
           song: song,
           artist: artist
-          // songId: song.id,
-          // title: song.title,
-          // artistName: artist.artistName,
-          // genre: artist.genre,
         ));
       }
     }

@@ -12,7 +12,6 @@ class LibraryViewModel extends ChangeNotifier {
   final PlayerState playerState;
 
   AsyncValue<List<SongWithArtist>> songsValue = AsyncValue.loading();
-  Map<String, Song> _songMap = {}; // Map to store full Song objects by ID
 
   LibraryViewModel({required this.songRepository, required this.playerState, this.artistRepository}) {
     playerState.addListener(notifyListeners);
@@ -32,28 +31,16 @@ class LibraryViewModel extends ChangeNotifier {
   }
 
   void fetchSong() async {
-    // 1- Loading state
     songsValue = AsyncValue.loading();
     notifyListeners();
 
     try {
-      // 2- Fetch songs and songs with artist data
-      final songs = await songRepository.fetchSongs();
       final songsWithArtist = await songRepository.fetchSongWithArtist();
-
-      // Create a map of songId -> Song for easy lookup
-      _songMap = {};
-      for (var song in songs) {
-        _songMap[song.id] = song;
-      }
-
       songsValue = AsyncValue.success(songsWithArtist);
     } catch (e) {
-      // 3- Fetch is unsucessfull
       songsValue = AsyncValue.error(e);
     }
     notifyListeners();
-
   }
   
   bool isSongPlaying(Song song) => playerState.currentSong == song;

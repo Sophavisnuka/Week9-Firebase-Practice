@@ -16,7 +16,6 @@ class ArtistDto {
 
   Map<String, dynamic> toJson(Artist artist) {
     return {
-      artistId: artistId,
       artistName: artistName,
       genre: genre,
       artistProfile: artistProfile.toString(),
